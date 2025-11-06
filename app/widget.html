@@ -49,19 +49,17 @@
         </div>
         
         <!-- Conditional Field Groups -->
-        <div class="form-group"> 
-          <div class="hidden-field-group" id="business-partner-group">
-            <label for="business-partner">Business Partner <span class="required-star">*</span></label>
-            <select id="business-partner" name="business-partner" required>
-              <option value="" disabled selected>Select Business Partner ...</option>
-              <!-- Add dynamic partner options here -->
-            </select>
-            <span class="error-message" id="error-business-partner"></span> 
-          </div>
+        <div class="form-group hidden-field-group" id="business-partner-group"> 
+          <label for="business-partner">Business Partner <span class="required-star">*</span></label>
+          <select id="business-partner" name="business-partner" required>
+            <option value="" disabled selected>Select Business Partner ...</option>
+            <!-- Add dynamic partner options here -->
+          </select>
+          <span class="error-message" id="error-business-partner"></span> 
         </div>
-      
-        <div class="form-group">
-          <div class="hidden-field-group" id="employee-name-group">
+
+        <div class="hidden-field-group" id="employee-name-group">
+          <div class="form-group">
             <label for="employee-name">Employee Name <span class="required-star" required>*</span></label>
             <select id="employee-name" name="employee-name" required>
               <option value="" disabled selected>Select ...</option>
