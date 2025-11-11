@@ -1,109 +1,142 @@
 <!DOCTYPE html>
-<html>
-  <head>
+<html lang="en">
+<head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <!-- Note: Zoho SDK is assumed to be available in the environment -->
+    <title>Lead Referral Form</title>
+    <!-- Load Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Load Zoho SDK (Kept from original HTML) -->
     <script src="https://live.zwidgets.com/js-sdk/1.2/ZohoEmbededAppSDK.min.js"></script>
-    <link rel="stylesheet" type="text/css" href="css/index.css">
-  </head>
-  <body>
-    <div class="form-container">
-      <form id="record-form" novalidate>
-        <div class="form-group">
-          <label for="first-name">First Name <span class="required-star">*</span></label>
-          <input type="text" id="first-name" name="first-name" required />
-          <span class="error-message" id="error-first-name"></span>
-        </div>
-        
-        <div class="form-group">
-          <label for="last-name">Last Name <span class="required-star">*</span></label>
-          <input type="text" id="last-name" name="last-name" required />
-          <span class="error-message" id="error-last-name"></span>
-        </div>
-        
-        <div class="form-group">
-          <label for="email">Email <span class="required-star">*</span></label>
-          <input type="email" id="email" name="email" required />
-          <span class="error-message" id="error-email"></span>
-        </div>
-        
-        <div class="form-group">
-          <label for="mobile">Mobile</label> <!-- Field is now optional -->
-          <input type="tel" id="mobile" name="mobile" /> <!-- Removed required attribute -->
-          <span class="error-message" id="error-mobile"></span>
-        </div>
-        
-        <div class="form-group">
-          <label for="lead-source-select">Lead Source <span class="required-star">*</span></label>
-          <select id="lead-source-select" name="lead-source-select" required>
-            <option value="" disabled selected>Select ...</option>
-            <option value="Business Partner Referrals">Business Partner Referrals</option>
-            <option value="Employee Referrals">Employee Referrals</option>
-            <option value="Existing Clients - Referrals">Existing Clients - Referrals</option>
-            <option value="External Referrals">External Referrals</option>
-            <option value="Walked In">Walked In</option>
-            <option value="Word of Mouth">Word of Mouth</option>
-          </select>
-          <span class="error-message" id="error-lead-source-select"></span> 
-        </div>
-        
-        <!-- Conditional Field Groups -->
-        <div class="form-group hidden-field-group" id="business-partner-group"> 
-          <label for="business-partner">Business Partner <span class="required-star">*</span></label>
-          <select id="business-partner" name="business-partner" required>
-            <option value="" disabled selected>Select Business Partner ...</option>
-            <!-- Add dynamic partner options here -->
-          </select>
-          <span class="error-message" id="error-business-partner"></span> 
-        </div>
+    <style>
+        /* Custom Styles for Inter Font and Error Messages */
+        body { font-family: 'Inter', sans-serif; }
+        .error-message {
+            color: #ef4444; /* Tailwind red-500 */
+            font-size: 0.75rem; /* Reduced font size for tighter look */
+            margin-top: 0.25rem;
+            display: block;
+        }
+        /* Custom focus ring color */
+        input:focus, select:focus {
+            border-color: #2563eb; /* blue-600 */
+            box-shadow: 0 0 0 2px rgba(37, 99, 235, 0.4); /* Slightly smaller shadow */
+            outline: none;
+        }
+    </style>
+</head>
+<body class="bg-gray-50 min-h-screen p-4 flex justify-center"> <!-- Reduced outer padding for better fit -->
 
-        <div class="hidden-field-group" id="employee-name-group">
-          <div class="form-group">
-            <label for="employee-name">Employee Name <span class="required-star" required>*</span></label>
-            <select id="employee-name" name="employee-name" required>
-              <option value="" disabled selected>Select ...</option>
-              <!-- Employee names will be populated dynamically via Zoho API -->
-            </select>
-            <span class="error-message" id="error-employee-name"></span>
-          </div>
-        </div>
+    <div class="w-full max-w-2xl bg-white shadow-xl rounded-xl p-4 sm:p-6"> <!-- Reduced container padding -->
+        <h1 class="text-xl font-bold text-gray-800 mb-4 border-b pb-2">Record New Lead</h1> <!-- Reduced title size and margin -->
 
-        <div class="hidden-field-group" id="referrer-details-group">
-          <div class="form-group">
-            <label for="referrer-full-name">Referrer's Full Name <span class="required-star">*</span></label>
-            <input type="text" id="referrer-full-name" name="referrer-full-name" required />
-            <span class="error-message" id="error-referrer-full-name"></span>
-          </div>
+        <form id="record-form" novalidate>
+            <!-- Reduced gap from gap-6 to gap-4 -->
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
 
-          <div class="form-group">
-            <label for="contact-number">Contact Number</label> <!-- Field is now optional -->
-            <input type="text" id="contact-number" name="contact-number" /> <!-- Removed required attribute -->
-            <span class="error-message" id="error-contact-number"></span>
-          </div>
-              
-          <div class="form-group">
-            <label for="referrer-email-address">Referrer Email Address <span class="required-star">*</span></label>
-            <input type="email" id="referrer-email-address" name="referrer-email-address" required />
-            <span class="error-message" id="error-referrer-email-address"></span>
-          </div>
-        </div>
+                <!-- Primary Contact Details - Reduced space-y-6 to space-y-3 -->
+                <div class="space-y-3 md:col-span-2">
         
-        <button class="submit-button" type="submit" id="submit-button">Submit</button>
-      </form>
+                    <div>
+                        <label for="first-name" class="block text-sm font-medium text-gray-700">First Name <span class="text-red-500">*</span></label>
+                        <!-- Reduced input padding from p-3 to p-2 -->
+                        <input type="text" id="first-name" name="first-name" class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm p-2 text-sm transition duration-150 ease-in-out">
+                        <span class="error-message" id="error-first-name"></span>
+                    </div>
+
+                    <div>
+                        <label for="last-name" class="block text-sm font-medium text-gray-700">Last Name <span class="text-red-500">*</span></label>
+                        <input type="text" id="last-name" name="last-name" class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm p-2 text-sm transition duration-150 ease-in-out">
+                        <span class="error-message" id="error-last-name"></span>
+                    </div>
+
+                    <div>
+                        <label for="email" class="block text-sm font-medium text-gray-700">Email <span class="text-red-500">*</span></label>
+                        <input type="email" id="email" name="email" class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm p-2 text-sm transition duration-150 ease-in-out">
+                        <span class="error-message" id="error-email"></span>
+                    </div>
+
+                    <div>
+                        <label for="mobile" class="block text-sm font-medium text-gray-700">Mobile <span class="text-red-500"></span></label>
+                        <input type="tel" id="mobile" name="mobile" class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm p-2 text-sm transition duration-150 ease-in-out">
+                        <span class="error-message" id="error-mobile"></span>
+                    </div>
+                </div>
+
+                <!-- Lead Source Selection - Reduced space-y-6 to space-y-3 and adjusted margin/padding -->
+                <div class="space-y-3 md:col-span-2 mt-3 pt-3 border-t">
+                    <h2 class="text-base font-semibold text-gray-700">Lead Source Information</h2>
+
+                    <div class="md:col-span-2">
+                        <label for="lead-source-select" class="block text-sm font-medium text-gray-700">Lead Source <span class="text-red-500">*</span></label>
+                        <select id="lead-source-select" name="lead-source-select" class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm p-2 text-sm transition duration-150 ease-in-out bg-white">
+                            <option value="" disabled selected>Select ...</option>
+                            <option value="Business Partner Referrals">Business Partner Referrals</option>
+                            <option value="Employee Referrals">Employee Referrals</option>
+                            <option value="Existing Clients - Referrals">Existing Clients - Referrals</option>
+                            <option value="External Referrals">External Referrals</option>
+                            <option value="Walked In">Walked In</option>
+                            <option value="Word of Mouth">Word of Mouth</option>
+                        </select>
+                        <span class="error-message" id="error-lead-source-select"></span>
+                    </div>
+
+                    <!-- Conditional Fields Container - Reduced space-y-6 to space-y-3 -->
+                    <div id="conditional-fields" class="space-y-3">
+
+                        <!-- Business Partner Field (Hidden by default) -->
+                        <div id="bp-field" class="hidden">
+                            <label for="business-partner" class="block text-sm font-medium text-gray-700">Business Partner <span class="text-red-500">*</span></label>
+                            <select id="business-partner" name="business-partner" class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm p-2 text-sm transition duration-150 ease-in-out bg-white">
+                                <option value="" disabled selected>Select Business Partner ...</option>
+                            </select>
+                            <span class="error-message" id="error-business-partner"></span>
+                        </div>
+                        <!-- Employee Name Field (Hidden by default) -->
+                        <div id="employee-field" class="hidden">
+                            <label for="employee-name" class="block text-sm font-medium text-gray-700">Employee Name <span class="text-red-500">*</span></label>
+                            <select id="employee-name" name="employee-name" class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm p-2 text-sm transition duration-150 ease-in-out bg-white">
+                                <option value="" disabled selected>Select Employee Name ...</option>
+                                <!-- Employee options will be populated by JS/Zoho -->
+                            </select>
+                            <span class="error-message" id="error-employee-name"></span>
+                        </div>
+
+                        <!-- Referrer Fields (Hidden by default) - Reduced padding on box -->
+                        <div id="referrer-group" class="hidden border border-blue-100 rounded-lg p-3 bg-blue-50 space-y-3">
+                            <h3 class="text-sm font-semibold text-blue-800">Referrer Details</h3> <!-- Reduced heading size -->
+                            <div>
+                                <label for="referrer-full-name" class="block text-sm font-medium text-gray-700">Referrer's Full Name <span class="text-red-500">*</span></label>
+                                <input type="text" id="referrer-full-name" name="referrer-full-name" class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm p-2 text-sm transition duration-150 ease-in-out">
+                                <span class="error-message" id="error-referrer-full-name"></span>
+                            </div>
+
+                            <div>
+                                <label for="referrer-contact-number" class="block text-sm font-medium text-gray-700">Referrer's Contact Number <span class="text-red-500">*</span></label>
+                                <input type="text" id="referrer-contact-number" name="referrer-contact-number" class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm p-2 text-sm transition duration-150 ease-in-out">
+                                <span class="error-message" id="error-referrer-contact-number"></span>
+                            </div>
+
+                            <div>
+                                <label for="referrer-email-address" class="block text-sm font-medium text-gray-700">Referrer's Email Address <span class="text-red-500">*</span></label>
+                                <input type="email" id="referrer-email-address" name="referrer-email-address" class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm p-2 text-sm transition duration-150 ease-in-out">
+                                <span class="error-message" id="error-referrer-email-address"></span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Submission and Actions - Reduced margin/padding from mt-8 pt-6 to mt-4 pt-4 -->
+                <div class="mt-4 pt-4 border-t md:col-span-2 flex justify-between items-center">
+                    <!-- Reduced button padding from px-6 py-3 to px-5 py-2 -->
+                    <button type="submit" id="submit_button_id" class="px-5 py-2 bg-indigo-600 text-white font-semibold rounded-lg shadow-md hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 transition duration-150 ease-in-out text-sm">
+                        Submit Lead Record
+                    </button>
+                    <!-- Close button commented out as it was in original -->
+                </div>
+            </div>
+        </form>
     </div>
-
-    <div id="status-modal-overlay" class="status-modal-overlay">
-      <div class="status-modal-content">
-        <span id="status-icon" class="status-icon"></span>
-        <p id="status-message"></p>
-      </div>
-    </div>
-    
-    <div>
-      <button class="close-button" onclick="closeWidget()">×</button>
-    </div>
-
     <script src="js/app.js"></script>
-  </body>
+</body>
 </html>
