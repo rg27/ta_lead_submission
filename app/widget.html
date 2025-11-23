@@ -4,9 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Lead Referral Form</title>
-    <!-- Load Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
-    <!-- Load Zoho SDK (Kept from original HTML) -->
     <script src="https://live.zwidgets.com/js-sdk/1.2/ZohoEmbededAppSDK.min.js"></script>
     <style>
         /* Custom Styles for Inter Font and Error Messages */
@@ -25,21 +23,13 @@
         }
     </style>
 </head>
-<body class="bg-gray-50 min-h-screen p-4 flex justify-center"> <!-- Reduced outer padding for better fit -->
-
-    <div class="w-full max-w-2xl bg-white shadow-xl rounded-xl p-4 sm:p-6"> <!-- Reduced container padding -->
-        <h1 class="text-xl font-bold text-gray-800 mb-4 border-b pb-2">Record New Lead</h1> <!-- Reduced title size and margin -->
-
-        <form id="record-form" novalidate>
-            <!-- Reduced gap from gap-6 to gap-4 -->
+<body class="bg-gray-50 min-h-screen p-4 flex justify-center"> <div class="w-full max-w-2xl bg-white shadow-xl rounded-xl p-4 sm:p-6"> <h1 class="text-xl font-bold text-gray-800 mb-4 border-b pb-2">Record New Lead</h1> <form id="record-form" novalidate>
             <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
 
-                <!-- Primary Contact Details - Reduced space-y-6 to space-y-3 -->
                 <div class="space-y-3 md:col-span-2">
         
                     <div>
                         <label for="first-name" class="block text-sm font-medium text-gray-700">First Name <span class="text-red-500">*</span></label>
-                        <!-- Reduced input padding from p-3 to p-2 -->
                         <input type="text" id="first-name" name="first-name" class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm p-2 text-sm transition duration-150 ease-in-out">
                         <span class="error-message" id="error-first-name"></span>
                     </div>
@@ -63,7 +53,6 @@
                     </div>
                 </div>
 
-                <!-- Lead Source Selection - Reduced space-y-6 to space-y-3 and adjusted margin/padding -->
                 <div class="space-y-3 md:col-span-2 mt-3 pt-3 border-t">
                     <h2 class="text-base font-semibold text-gray-700">Lead Source Information</h2>
 
@@ -81,10 +70,8 @@
                         <span class="error-message" id="error-lead-source-select"></span>
                     </div>
 
-                    <!-- Conditional Fields Container - Reduced space-y-6 to space-y-3 -->
                     <div id="conditional-fields" class="space-y-3">
 
-                        <!-- Business Partner Field (Hidden by default) -->
                         <div id="bp-field" class="hidden">
                             <label for="business-partner" class="block text-sm font-medium text-gray-700">Business Partner <span class="text-red-500">*</span></label>
                             <select id="business-partner" name="business-partner" class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm p-2 text-sm transition duration-150 ease-in-out bg-white">
@@ -92,20 +79,16 @@
                             </select>
                             <span class="error-message" id="error-business-partner"></span>
                         </div>
-                        <!-- Employee Name Field (Hidden by default) -->
                         <div id="employee-field" class="hidden">
                             <label for="employee-name" class="block text-sm font-medium text-gray-700">Employee Name <span class="text-red-500">*</span></label>
                             <select id="employee-name" name="employee-name" class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm p-2 text-sm transition duration-150 ease-in-out bg-white">
                                 <option value="" disabled selected>Select Employee Name ...</option>
-                                <!-- Employee options will be populated by JS/Zoho -->
-                            </select>
+                                </select>
                             <span class="error-message" id="error-employee-name"></span>
                         </div>
 
-                        <!-- Referrer Fields (Hidden by default) - Reduced padding on box -->
                         <div id="referrer-group" class="hidden border border-blue-100 rounded-lg p-3 bg-blue-50 space-y-3">
-                            <h3 class="text-sm font-semibold text-blue-800">Referrer Details</h3> <!-- Reduced heading size -->
-                            <div>
+                            <h3 class="text-sm font-semibold text-blue-800">Referrer Details</h3> <div>
                                 <label for="referrer-full-name" class="block text-sm font-medium text-gray-700">Referrer's Full Name <span class="text-red-500">*</span></label>
                                 <input type="text" id="referrer-full-name" name="referrer-full-name" class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm p-2 text-sm transition duration-150 ease-in-out">
                                 <span class="error-message" id="error-referrer-full-name"></span>
@@ -126,17 +109,33 @@
                     </div>
                 </div>
 
-                <!-- Submission and Actions - Reduced margin/padding from mt-8 pt-6 to mt-4 pt-4 -->
                 <div class="mt-4 pt-4 border-t md:col-span-2 flex justify-between items-center">
-                    <!-- Reduced button padding from px-6 py-3 to px-5 py-2 -->
                     <button type="submit" id="submit_button_id" class="px-5 py-2 bg-indigo-600 text-white font-semibold rounded-lg shadow-md hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 transition duration-150 ease-in-out text-sm">
                         Submit Lead Record
                     </button>
-                    <!-- Close button commented out as it was in original -->
-                </div>
+                    </div>
             </div>
         </form>
     </div>
+
+    <div id="custom-modal" class="fixed inset-0 bg-gray-600 bg-opacity-50 overflow-y-auto h-full w-full hidden z-50 flex justify-center items-center">
+        <div class="relative p-5 border w-96 shadow-lg rounded-md bg-white text-center">
+            <div class="mt-3">
+                <div id="modal-icon" class="mx-auto flex items-center justify-center h-12 w-12 rounded-full mb-4">
+                    </div>
+                <h3 class="text-lg leading-6 font-medium text-gray-900" id="modal-title"></h3>
+                <div class="mt-2 px-7 py-3">
+                    <p class="text-sm text-gray-500" id="modal-message"></p>
+                </div>
+                <div class="items-center px-4 py-3">
+                    <button id="modal-close-btn" class="px-4 py-2 bg-indigo-600 text-white text-base font-medium rounded-md w-full shadow-sm hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-300">
+                        OK
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <script src="js/app.js"></script>
 </body>
 </html>
